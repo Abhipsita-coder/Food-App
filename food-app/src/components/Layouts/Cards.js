@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useState } from 'react';
 import { Col, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/actions/cart";
+// const [openCart, setOpenCart] = useState(false);
+// const [openWishlist, setOpenWishlist] = useState(false);
+// const [open, setOpen] = useState(false);
+function Cards({ image, rating, title, paragraph, price, renderRatingIcons, data }) {
+  const dispatch = useDispatch();
+  //  console.log(data);
+  const handleAddToCart = () => {
+    dispatch(addToCart(data)); // Make sure 'data' contains 'id' and other required fields
+  };
 
-function Cards({ image, rating, title, paragraph, price, renderRatingIcons }) {
   return (
     <Col sm={6} lg={4} xl={3} className="mb-4">
       <Card className="overflow-hidden">
@@ -13,22 +22,20 @@ function Cards({ image, rating, title, paragraph, price, renderRatingIcons }) {
           <div className="d-flex align-items-center justify-content-between">
             <div className="item_rating">{renderRatingIcons(rating)}</div>
             <div className="wishlist">
-              <i class="bi bi-heart"></i>
+              <i className="bi bi-heart"></i>
             </div>
           </div>
-
           <Card.Title>{title}</Card.Title>
           <Card.Text>{paragraph}</Card.Text>
-
           <div className="d-flex align-items-center justify-content-between">
             <div className="menu_price">
               <h5 className="mb-0">${price}</h5>
             </div>
             <div className="add_to_card">
-              <Link to="/">
-                <i class="bi bi-bag me-2"></i>
+              <button onClick={handleAddToCart}>
+                <i className="bi bi-bag me-2"></i>
                 Add To Cart
-              </Link>
+              </button>
             </div>
           </div>
         </Card.Body>

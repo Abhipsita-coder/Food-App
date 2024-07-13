@@ -1,32 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo/logo.png";
 import "../../styles/HeaderStyle.css";
+import { useSelector } from "react-redux"; // Import useSelector to access Redux state
 
 const Header = () => {
   const [nav, setNav] = useState(false);
+  const { cart } = useSelector((state) => state.cart);
+
+
+  console.log("Redux State:", useSelector((state) => state)); // Check the entire state structure
+  console.log("Cart State:", cart); // Check specifically the cart state
+  
 
   // Scroll Navbar
   const changeValueOnScroll = () => {
-    const scrollValue = document?.documentElement?.scrollTop;
+    const scrollValue = document.documentElement.scrollTop;
     scrollValue > 100 ? setNav(true) : setNav(false);
-  };
+  }; 
 
-  window.addEventListener("scroll", changeValueOnScroll);
+  useEffect(() => {
+    window.addEventListener("scroll", changeValueOnScroll);
+    return () => {
+      window.removeEventListener("scroll", changeValueOnScroll);
+    };
+  }, []);
 
   return (
     <header>
-      <Navbar
-        collapseOnSelect
-        expand="lg"
-        className={`${nav === true ? "sticky" : ""}`}
-      >
+      <Navbar collapseOnSelect expand="lg" className={`${nav ? "sticky" : ""}`}>
         <Container>
-          <Navbar.Brand href="#home">
-            <Link to="/" className="logo">
-              <img src={Logo} alt="Logo" className="img-fluid" />
-            </Link>
+          <Navbar.Brand as={Link} to="/" className="logo">
+            <img src={Logo} alt="Logo" className="img-fluid" />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
@@ -40,9 +46,6 @@ const Header = () => {
               <Nav.Link as={Link} to="/menu">
                 Our Menu
               </Nav.Link>
-              <Nav.Link as={Link} to="/shop">
-                Shop
-              </Nav.Link>
               <Nav.Link as={Link} to="/blog">
                 Blog
               </Nav.Link>
@@ -50,9 +53,10 @@ const Header = () => {
                 Contact
               </Nav.Link>
               <Nav.Link as={Link} to="/">
+                {/* Ensure cart is defined before accessing its length */}
                 <div className="cart">
-                  <i class="bi bi-bag fs-5"></i>
-                  <em className="roundpoint">2</em>
+                  <i className="bi bi-bag fs-5"></i>
+                  <em className="roundpoint">{cart ? cart.length : 0}</em>
                 </div>
               </Nav.Link>
             </Nav>
