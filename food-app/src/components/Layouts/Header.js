@@ -3,22 +3,20 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo/logo.png";
 import "../../styles/HeaderStyle.css";
-import { useSelector } from "react-redux"; // Import useSelector to access Redux state
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [nav, setNav] = useState(false);
-  const { cart } = useSelector((state) => state.cart);
-
-
+  const cart = useSelector((state) => state.cart.cart);
+  const wishlist = useSelector((state) => state.wishlist.wishlist);
+  console.log("type dekh rha"+typeof cart); // should output "object" if it's an array
   console.log("Redux State:", useSelector((state) => state)); // Check the entire state structure
   console.log("Cart State:", cart); // Check specifically the cart state
-  
 
-  // Scroll Navbar
   const changeValueOnScroll = () => {
     const scrollValue = document.documentElement.scrollTop;
-    scrollValue > 100 ? setNav(true) : setNav(false);
-  }; 
+    setNav(scrollValue > 100);
+  };
 
   useEffect(() => {
     window.addEventListener("scroll", changeValueOnScroll);
@@ -37,26 +35,21 @@ const Header = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link as={Link} to="/">
-                Home
-              </Nav.Link>
-              <Nav.Link as={Link} to="/about">
-                About
-              </Nav.Link>
-              <Nav.Link as={Link} to="/menu">
-                Our Menu
-              </Nav.Link>
-              <Nav.Link as={Link} to="/blog">
-                Blog
-              </Nav.Link>
-              <Nav.Link as={Link} to="/contact">
-                Contact
-              </Nav.Link>
-              <Nav.Link as={Link} to="/">
-                {/* Ensure cart is defined before accessing its length */}
+              <Nav.Link as={Link} to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/about">About</Nav.Link>
+              <Nav.Link as={Link} to="/menu">Our Menu</Nav.Link>
+              <Nav.Link as={Link} to="/blog">Blog</Nav.Link>
+              <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
+              <Nav.Link as={Link} to="/cart">
                 <div className="cart">
                   <i className="bi bi-bag fs-5"></i>
                   <em className="roundpoint">{cart ? cart.length : 0}</em>
+                </div>
+              </Nav.Link>
+              <Nav.Link as={Link} to="/wishlist">
+                <div className="cart">
+                  <i className="bi bi-heart fs-5"></i>
+                  <em className="roundpoint">{wishlist ? wishlist.length : 0}</em>
                 </div>
               </Nav.Link>
             </Nav>

@@ -1,0 +1,15 @@
+.small-image {
+    width: 100px; /* 12 * 4 to match Tailwind's w-12 */
+    height: 100px; /* 12 * 4 to match Tailwind's h-12 */
+    object-cover: cover;
+    border-radius: 50%;
+    background-color: #e2e8f0; /* Light gray background similar to Tailwind's bg-gray-200 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .small-image span {
+    color: #718096; /* Text color similar to Tailwind's text-gray-600 */
+  }
+  

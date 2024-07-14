@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/actions/cart";
 import axios from "axios";
-import styles from "../styles/styles";
-
+import { server}  from "../../server";
+import "../../styles/buy.css";
+import Layout from "../../components/Layouts/Layout";
+import { toast } from "react-toastify";
 
 const BuyNowPage = () => {
   const storedCart = JSON.parse(localStorage.getItem('cart'));
@@ -12,11 +14,10 @@ const BuyNowPage = () => {
     quantity: item.qty,
     totalPrice: item.discount_price * item.qty,
   }));
- 
+
   const dispatch = useDispatch();
   const selectedProduct = useSelector((state) => state.selectedProduct);
   const user = useSelector((state) => state.user);
-
   const [quantity] = useState(1);
   const [shippingDetails, setShippingDetails] = useState({
     fullName: "",
@@ -60,129 +61,104 @@ const BuyNowPage = () => {
     };
 
     try {
-      // Send orderData to the backend using Axios
       const response = await axios.post(`${server}/order`, orderData);
-
-      // Handle successful response
+       toast.success("Order Placed Successfully");
       console.log("Order submitted successfully:", response.data);
-
-      // Optionally, you can clear the cart or redirect the user to a success page
-      // dispatch(clearCart()); // Assuming you have an action to clear the cart
-      // history.push("/success-page"); // Assuming you are using React Router
     } catch (error) {
-      // Handle error if order submission fails
       console.error("Error submitting order:", error);
     }
   };
 
   return (
-    <div className={`py-4 ${styles.section}`}>
+    <>
+      <Layout>
+    <div className="py-4">
       <form onSubmit={handleSubmitOrder}>
-        {/* User details */}
         <div className="mb-4">
-  <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 text-center">
-    Full Name:
-  </label>
-  <input
-  type="text"
-  id="fullName"
-  value={shippingDetails.fullName}
-  onChange={(e) => setShippingDetails({ ...shippingDetails, fullName: e.target.value })}
-  className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300 placeholder-gray-400 text-gray-800"
-  placeholder="Full Name"
-/>
-
-</div>
-
+          <label htmlFor="fullName">Full Name:</label>
+          <input
+            type="text"
+            id="fullName"
+            value={shippingDetails.fullName}
+            onChange={(e) => setShippingDetails({ ...shippingDetails, fullName: e.target.value })}
+            placeholder="Full Name"
+          />
+        </div>
 
         <div className="mb-4">
-          <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700 text-center">Mobile Number:</label>
+          <label htmlFor="mobileNumber">Mobile Number:</label>
           <input
             type="tel"
             id="mobileNumber"
             value={shippingDetails.mobileNumber}
             onChange={(e) => setShippingDetails({ ...shippingDetails, mobileNumber: e.target.value })}
-            className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300 placeholder-gray-400 text-gray-800"
-  placeholder="Mobile Number"
-         
+            placeholder="Mobile Number"
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="alternateMobileNumber" className="block text-sm font-medium text-gray-700 text-center">Alternate Mobile Number:</label>
+          <label htmlFor="alternateMobileNumber">Alternate Mobile Number:</label>
           <input
             type="tel"
             id="alternateMobileNumber"
             value={shippingDetails.alternateMobileNumber}
-            onChange={(e) =>
-              setShippingDetails({ ...shippingDetails, alternateMobileNumber: e.target.value })
-            }
-            className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300 placeholder-gray-400 text-gray-800"
-  placeholder="Alternate Mobile Number"
+            onChange={(e) => setShippingDetails({ ...shippingDetails, alternateMobileNumber: e.target.value })}
+            placeholder="Alternate Mobile Number"
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 text-center">Email:</label>
+          <label htmlFor="email">Email:</label>
           <input
             type="email"
             id="email"
             value={shippingDetails.email}
             onChange={(e) => setShippingDetails({ ...shippingDetails, email: e.target.value })}
-            className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300 placeholder-gray-400 text-gray-800"
-  placeholder="Email"
-
-
+            placeholder="Email"
           />
         </div>
 
-        {/* Shipping address */}
         <div className="mb-4">
-          <label htmlFor="address" className="block text-sm font-medium text-gray-700 text-center">Address:</label>
+          <label htmlFor="address">Address:</label>
           <input
             type="text"
             id="address"
             value={shippingDetails.address}
             onChange={(e) => setShippingDetails({ ...shippingDetails, address: e.target.value })}
-          
-            className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300 placeholder-gray-400 text-gray-800"
-  placeholder="Address"
+            placeholder="Address"
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="state" className="block text-sm font-medium text-gray-700 text-center">State:</label>
+          <label htmlFor="state">State:</label>
           <input
             type="text"
             id="state"
             value={shippingDetails.state}
             onChange={(e) => setShippingDetails({ ...shippingDetails, state: e.target.value })}
-          
-            className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300 placeholder-gray-400 text-gray-800"
-  placeholder="State"
+            placeholder="State"
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="district" className="block text-sm font-medium text-gray-700 text-center">District:</label>
+          <label htmlFor="district">District:</label>
           <input
             type="text"
             id="district"
             value={shippingDetails.district}
             onChange={(e) => setShippingDetails({ ...shippingDetails, district: e.target.value })}
-            className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300 placeholder-gray-400 text-gray-800"
-  placeholder="District"  />
+            placeholder="District"
+          />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="pinCode" className="block text-sm font-medium text-gray-700 text-center">Pin Code:</label>
+          <label htmlFor="pinCode">Pin Code:</label>
           <input
             type="text"
             id="pinCode"
             value={shippingDetails.pinCode}
             onChange={(e) => setShippingDetails({ ...shippingDetails, pinCode: e.target.value })}
-            className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300 placeholder-gray-400 text-gray-800"
-  placeholder="PinCode"
+            placeholder="Pin Code"
           />
         </div>
 
@@ -192,13 +168,10 @@ const BuyNowPage = () => {
             id="acceptTerms"
             checked={shippingDetails.acceptTerms}
             onChange={(e) => setShippingDetails({ ...shippingDetails, acceptTerms: e.target.checked })}
-            // className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300 placeholder-gray-400 text-gray-800"
-         
           />
           <label htmlFor="acceptTerms">I accept the terms and conditions</label>
         </div>
 
-        {/* Cart items summary */}
         <ul>
           {user?.cart?.map((item) => (
             <li key={item.id}>
@@ -207,16 +180,13 @@ const BuyNowPage = () => {
           ))}
         </ul>
 
-        {/* Submit Order button */}
-        <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-200"
-          >
-            Place Order Now
-          </button>
+        <button type="submit">
+          Place Order Now
+        </button>
       </form>
     </div>
-  );
+  </Layout>
+  </> );
 };
 
 export default BuyNowPage;

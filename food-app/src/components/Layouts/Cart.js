@@ -10,9 +10,9 @@ import CartSingle from "./CartSingle";
 import styles from "../../styles/styles";
 
 const Cart = ({ setOpenCart }) => {
-  const { cart } = useSelector((state) => state.cart);
+  const  cart  = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-console.log(cart);
+console.log("vvvv"+cart);
   const removeFromCartHandler = (data) => {
     dispatch(removeFromCart(data));
   };
