@@ -8,8 +8,8 @@ const app = express();
 const port = process.env.PORT || 5001;
 
 const corsOptions = {
-    origin: 'http://localhost:3000',  // Replace with the origin of your frontend application
-    credentials: true,                 // Enable credentials (e.g., cookies, authorization headers)
+    origin: 'http://localhost:3000',  
+    credentials: true,                 
   };
   
   app.use(cors(corsOptions));
